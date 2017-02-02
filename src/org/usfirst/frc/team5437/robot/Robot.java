@@ -2,8 +2,10 @@
 package org.usfirst.frc.team5437.robot;
 
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
+import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
 import org.usfirst.frc.team5437.robot.subsystems.Shooter;
+import org.usfirst.frc.team5437.robot.subsystems.Stirrer;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,6 +26,8 @@ public class Robot extends IterativeRobot {
 	public static final Chassis chassis = new Chassis();
 	public static final Shooter shooter = new Shooter();
 	public static final NavX navx = new NavX();
+	public static final Climber climber = new Climber();
+	public static final Stirrer stirrer = new Stirrer();
 
 	public static OI oi;
 
@@ -38,6 +42,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		RobotMap.init();
 		oi = new OI();
+		oi.init();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}

@@ -1,5 +1,8 @@
 package org.usfirst.frc.team5437.robot;
 
+import org.usfirst.frc.team5437.robot.commands.Climb;
+import org.usfirst.frc.team5437.robot.commands.Fire;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -42,7 +45,8 @@ public class OI {
 	Joystick joy2 = new Joystick(1);
 	Button b2_1 = new JoystickButton(joy2, 1);
 	public void init() {
-		b1_1.whileHeld(command);
+		b1_1.whileHeld(new Climb());
+		b2_1.whileHeld(new Fire());
 	}
 	public Joystick getJoy1(){return joy1;}
 	public Joystick getJoy2(){return joy2;} 

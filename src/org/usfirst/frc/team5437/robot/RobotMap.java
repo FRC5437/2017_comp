@@ -35,5 +35,9 @@ public class RobotMap {
 		drive1.reverseOutput(false);
 		drive3.reverseOutput(true);
 		drive4.reverseOutput(true);
+		chassis.setSafetyEnabled(false);
+		shooter.changeControlMode(CANTalon.TalonControlMode.Speed);
+		shooter.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		shooter.disable();
 	}
 }

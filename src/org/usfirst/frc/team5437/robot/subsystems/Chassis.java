@@ -2,6 +2,7 @@ package org.usfirst.frc.team5437.robot.subsystems;
 
 import org.usfirst.frc.team5437.robot.Robot;
 import org.usfirst.frc.team5437.robot.RobotMap;
+import org.usfirst.frc.team5437.robot.commands.DriveRobot;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
@@ -29,6 +30,7 @@ public class Chassis extends PIDSubsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	setDefaultCommand(new DriveRobot());
     }
 
     protected double returnPIDInput() {
@@ -44,7 +46,7 @@ public class Chassis extends PIDSubsystem {
     	Drive(output, -output);
     }
     public void Drive(double left, double right){
-    	RobotMap.chassis.tankDrive(left, right, false);
+    	RobotMap.chassis.tankDrive(left, right, true);
     }
     
 }
