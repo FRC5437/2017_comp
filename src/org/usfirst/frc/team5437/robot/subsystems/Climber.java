@@ -17,10 +17,12 @@ public class Climber extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     public void Climb() {
-    	RobotMap.climber.set(1.0);
+    	RobotMap.climber1.set(1.0);
+    	RobotMap.climber2.set(1.0);
     }
     public void Stop() {
-    	RobotMap.climber.set(0.0);
+    	RobotMap.climber1.set(0.0);
+    	RobotMap.climber2.set(0.0);
     }
 }
 

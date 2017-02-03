@@ -28,8 +28,9 @@ public class RobotMap {
 	public static RobotDrive chassis = new RobotDrive(drive1, drive2, drive3, drive4);
 	
 	public static CANTalon shooter = new CANTalon(4);
-	public static CANTalon stirrer = new CANTalon(5);
-	public static CANTalon climber = new CANTalon(6);
+	public static CANTalon climber1 = new CANTalon(5);
+	public static CANTalon climber2 = new CANTalon(6);
+	public static CANTalon stirrer = new CANTalon(7);
 	public static void init() {
 		drive1.reverseOutput(false);
 		drive1.reverseOutput(false);
