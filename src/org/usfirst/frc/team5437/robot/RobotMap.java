@@ -3,6 +3,7 @@ package org.usfirst.frc.team5437.robot;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -24,6 +25,7 @@ public class RobotMap {
 	static CANTalon drive2 = new CANTalon(1);
 	static CANTalon drive3 = new CANTalon(2);
 	static CANTalon drive4 = new CANTalon(3);
+	public static NetworkTable grip;
 	
 	public static RobotDrive chassis = new RobotDrive(drive1, drive2, drive3, drive4);
 	
@@ -40,5 +42,7 @@ public class RobotMap {
 		shooter.changeControlMode(CANTalon.TalonControlMode.Speed);
 		shooter.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
 		shooter.disable();
+		grip = NetworkTable.getTable("GRIP");
+
 	}
 }

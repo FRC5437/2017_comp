@@ -6,6 +6,7 @@ import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
 import org.usfirst.frc.team5437.robot.subsystems.Shooter;
 import org.usfirst.frc.team5437.robot.subsystems.Stirrer;
+import org.usfirst.frc.team5437.robot.subsystems.Targeting;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -28,6 +29,7 @@ public class Robot extends IterativeRobot {
 	public static final NavX navx = new NavX();
 	public static final Climber climber = new Climber();
 	public static final Stirrer stirrer = new Stirrer();
+	public static final Targeting targeting = new Targeting();
 
 	public static OI oi;
 
