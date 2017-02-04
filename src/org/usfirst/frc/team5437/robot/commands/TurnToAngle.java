@@ -7,32 +7,33 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveForwardForTime extends Command {
-
-    public DriveForwardForTime(double time) {
+public class TurnToAngle extends Command {
+	private double setpoint;
+    public TurnToAngle(double rotation) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.chassis);
-    	setTimeout(time);
+    	setpoint = rotation;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.chassis.setSetpoint(setpoint);
+    	Robot.chassis.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassis.Drive(1.0, 1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut();
+        return Robot.chassis.onTarget();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.chassis.Drive(0.0, 0.0);
+    	Robot.chassis.disable();
     }
 
     // Called when another command which requires one or more of the same

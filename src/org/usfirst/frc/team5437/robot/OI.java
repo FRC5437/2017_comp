@@ -3,6 +3,7 @@ package org.usfirst.frc.team5437.robot;
 import org.usfirst.frc.team5437.robot.commands.Climb;
 import org.usfirst.frc.team5437.robot.commands.Drop;
 import org.usfirst.frc.team5437.robot.commands.Fire;
+import org.usfirst.frc.team5437.robot.commands.TurnToAngle;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -49,6 +50,7 @@ public class OI {
 	public void init() {
 		b1_1.whileHeld(new Climb());
 		//b1_2.whileHeld(new Drop()); NO. BAD.
+		b1_2.whenPressed(new TurnToAngle(45));
 		b2_1.whileHeld(new Fire());
 	}
 	public Joystick getJoy1(){return joy1;}

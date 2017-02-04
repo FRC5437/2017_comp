@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
  *
  */
 public class Chassis extends PIDSubsystem {
-	final static double kP = 1.0;
-	final static double kI = 0.0;
-	final static double kD = 0.0;
+	final static double kP = 0.05;
+	final static double kI = 0.0275;
+	final static double kD = 0.08;
 
     // Initialize your subsystem here
     public Chassis() {
@@ -45,8 +45,8 @@ public class Chassis extends PIDSubsystem {
         // e.g. yourMotor.set(output);
     	Drive(output, -output);
     }
-    public void Drive(double left, double right){
-    	RobotMap.chassis.arcadeDrive(left, right);
+    public void Drive(double drive, double rotate){
+    	RobotMap.chassis.arcadeDrive(drive, rotate);
     }
     
 }
