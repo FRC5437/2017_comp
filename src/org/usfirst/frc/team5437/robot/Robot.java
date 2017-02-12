@@ -4,9 +4,11 @@ package org.usfirst.frc.team5437.robot;
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
 import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
+import org.usfirst.frc.team5437.robot.subsystems.Relay;
 import org.usfirst.frc.team5437.robot.subsystems.Shooter;
 import org.usfirst.frc.team5437.robot.subsystems.Stirrer;
 import org.usfirst.frc.team5437.robot.subsystems.Targeting;
+import org.usfirst.frc.team5437.robot.subsystems.Ultrasonic;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -30,6 +32,8 @@ public class Robot extends IterativeRobot {
 	public static final Climber climber = new Climber();
 	public static final Stirrer stirrer = new Stirrer();
 	public static final Targeting targeting = new Targeting();
+	public static final Relay relay = new Relay();
+	public static final Ultrasonic ultrasonic = new Ultrasonic();
 
 	public static OI oi;
 
@@ -47,6 +51,7 @@ public class Robot extends IterativeRobot {
 		oi.init();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		
 	}
 
 	/**
@@ -115,6 +120,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putBoolean("hasGear", RobotMap.lSwitch.get());
 	}
 
 	/**

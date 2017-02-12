@@ -2,7 +2,9 @@ package org.usfirst.frc.team5437.robot;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -35,7 +37,9 @@ public class RobotMap {
 	public static CANTalon climber1 = new CANTalon(5);
 	public static CANTalon climber2 = new CANTalon(6);
 	public static Spark stirrer = new Spark(0);
-	public static DigitalInput lSwitch = new DigitalInput(0);
+	public static DigitalInput lSwitch = new DigitalInput(1);
+	public static DigitalOutput lights = new DigitalOutput(0);
+	public static AnalogInput ultrasonic = new AnalogInput(0);
 	public static void init() {
 		drive1.reverseOutput(false);
 		drive1.reverseOutput(false);

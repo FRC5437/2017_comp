@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
  *
  */
 public class Chassis extends PIDSubsystem {
-	final static double kP = 0.075;
+	final static double kP = 1.8;
 	final static double kI = 0.0;//275;
 	final static double kD = 0.0;//3.5;//8;
 
@@ -18,9 +18,10 @@ public class Chassis extends PIDSubsystem {
     public Chassis() {
     	super("Chassis", kP, kI, kD);
     	setInputRange(-180.0, 180.0);
-    	setOutputRange(-1.0, 1.0);
+    	setOutputRange(-0.6, 0.6);
     	setAbsoluteTolerance(2.0);
     	getPIDController().setContinuous(true);
+    	getPIDController().setToleranceBuffer(1);
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to

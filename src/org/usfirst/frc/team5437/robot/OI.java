@@ -1,8 +1,11 @@
 package org.usfirst.frc.team5437.robot;
 
 import org.usfirst.frc.team5437.robot.commands.Climb;
+import org.usfirst.frc.team5437.robot.commands.DriveUntilCollision;
 import org.usfirst.frc.team5437.robot.commands.Drop;
 import org.usfirst.frc.team5437.robot.commands.Fire;
+import org.usfirst.frc.team5437.robot.commands.GetDistance;
+import org.usfirst.frc.team5437.robot.commands.RelayToggle;
 import org.usfirst.frc.team5437.robot.commands.TurnToAngle;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -47,11 +50,15 @@ public class OI {
 	Button b1_2 = new JoystickButton(joy1, 2);
 	Joystick joy2 = new Joystick(1);
 	Button b2_1 = new JoystickButton(joy2, 1);
+	Button b2_2 = new JoystickButton(joy2, 2);
+	Button b2_3 = new JoystickButton(joy2, 3);
 	public void init() {
 		b1_1.whileHeld(new Climb());
 		//b1_2.whileHeld(new Drop()); NO. BAD.
-		b1_2.whenPressed(new TurnToAngle(45));
+		b1_2.whenPressed(new TurnToAngle(45.0));
 		b2_1.whileHeld(new Fire());
+		b2_2.whenPressed(new RelayToggle());
+		b2_3.whenPressed(new DriveUntilCollision(0.5));
 	}
 	public Joystick getJoy1(){return joy1;}
 	public Joystick getJoy2(){return joy2;} 

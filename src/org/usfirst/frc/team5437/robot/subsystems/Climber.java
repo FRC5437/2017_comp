@@ -17,8 +17,8 @@ public class Climber extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     public void Climb() {
-    	RobotMap.climber1.set(1.0);
-    	RobotMap.climber2.set(1.0);
+    	RobotMap.climber1.set(-1.0);
+    	RobotMap.climber2.set(-1.0);
     }
     public void Drop() { //This exists for testing only. It is not intended to be used in competition.
     	RobotMap.climber1.set(-1.0);

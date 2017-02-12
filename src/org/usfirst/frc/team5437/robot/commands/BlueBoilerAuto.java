@@ -25,9 +25,13 @@ public class BlueBoilerAuto extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new DriveForTime(1.0,0.0,1.0));
-    	addParallel(new TurnToAngle(35.0));
-    	addParallel(new DriveUntilCollision(0.8));
+    	addParallel(new TurnToAngle(60.0));
+    	addParallel(new target());
+    	addParallel(new DriveUntilCollision(0.5));
     	addParallel(new WaitUntilNoGear());
+    	addParallel(new DriveForTime(-1.0, 0.0, 0.2));
+    	addParallel(new TurnToAngle(45.0));
+    	addParallel(new ShortTurnToAngle(45.0));
     	addParallel(new DriveUntilCollision(-0.8));
     	addParallel(new Fire());
     }
