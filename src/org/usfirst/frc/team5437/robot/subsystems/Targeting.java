@@ -31,6 +31,7 @@ public class Targeting extends Subsystem {
     	double targetDistance = Double.MAX_VALUE;
     	int indexI = -1;
     	int indexJ = -1;
+    	System.out.println("Beginning contour selection");
     	for (int i = 0; i < areas.length; i++) {
     		for(int j = 0; j < areas.length; j++) {
     			if (i != j) {
@@ -42,11 +43,12 @@ public class Targeting extends Subsystem {
     			}
     		}
     	}
-
+    	System.out.println("Attempting to write contour values");
     	if (targetDistance != Double.MAX_VALUE) {
     		results[0] = centerX[indexI];
     		results[1] = centerX[indexJ];
     	}
+    	System.out.println(targetDistance + " " + results[0] + " " + results[1]);
     	return results;
     }
 	public double calcDeltaSetpoint(double distance) {
@@ -57,9 +59,11 @@ public class Targeting extends Subsystem {
 		} else centerTarget = targets[1] - targets[0];
 		double inchesScale = centerTarget / 8.5; //8.5 inches between the targets, so find scaling for distance
 		double targetDistance = centerTarget - 180;
-		double targetDistanceInches = targetDistance * inchesScale;
-		double radiansToRotate = Math.asin(targetDistance / distance);
+		double targetDistanceInches = targetDistance / inchesScale;
+		double radiansToRotate = Math.asin(targetDistanceInches
+				/ distance);
 		double degreesToRotate = radiansToRotate * 180 / Math.PI;
+		System.out.println("Ultrasonic Distance: " + distance + "Pixels per Inch: " + inchesScale + "Distance from peg to camera center: " + targetDistance + "Previous value but in inches instead of pixels: " + targetDistanceInches);
 		return degreesToRotate;
 	}
 }

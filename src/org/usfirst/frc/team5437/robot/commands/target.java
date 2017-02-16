@@ -36,6 +36,7 @@ public class target extends PIDCommand {
     	setpoint = Robot.targeting.calcDeltaSetpoint(Robot.ultrasonic.getDistance());
     	setSetpointRelative(setpoint);
     	setpoint += getPosition();
+    	System.out.println(setpoint);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -49,6 +50,7 @@ public class target extends PIDCommand {
     	if (onTargetCounter >= counterTarget) {
     		onTarget = true;
     	}
+    	//System.out.println(getPosition() + " " + onTargetCounter);
     }
     protected void usePIDOutput(double output) {
     	Robot.chassis.Drive(0.0, -output);
