@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5437.robot;
 
+import org.usfirst.frc.team5437.robot.commands.BBATest1;
+import org.usfirst.frc.team5437.robot.commands.BBATest2;
 import org.usfirst.frc.team5437.robot.commands.Climb;
 import org.usfirst.frc.team5437.robot.commands.DriveUntilCollision;
 import org.usfirst.frc.team5437.robot.commands.Drop;
@@ -55,10 +57,10 @@ public class OI {
 	public void init() {
 		b1_1.whileHeld(new Climb());
 		//b1_2.whileHeld(new Drop()); NO. BAD.
-		b1_2.whenPressed(new TurnToAngle(45.0));
+		b1_2.whenPressed(new BBATest1());
 		b2_1.whileHeld(new Fire());
 		b2_2.whenPressed(new RelayToggle());
-		b2_3.whenPressed(new DriveUntilCollision(0.5));
+		b2_3.whenPressed(new BBATest2());
 	}
 	public Joystick getJoy1(){return joy1;}
 	public Joystick getJoy2(){return joy2;} 

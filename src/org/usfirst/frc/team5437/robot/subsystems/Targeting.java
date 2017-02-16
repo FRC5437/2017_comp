@@ -43,7 +43,7 @@ public class Targeting extends Subsystem {
     		}
     	}
 
-    	if (targetDistance >= 0.0) {
+    	if (targetDistance != Double.MAX_VALUE) {
     		results[0] = centerX[indexI];
     		results[1] = centerX[indexJ];
     	}
