@@ -1,6 +1,10 @@
 
 package org.usfirst.frc.team5437.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
 import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
@@ -10,12 +14,18 @@ import org.usfirst.frc.team5437.robot.subsystems.Stirrer;
 import org.usfirst.frc.team5437.robot.subsystems.Targeting;
 import org.usfirst.frc.team5437.robot.subsystems.Ultrasonic;
 
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
 
 /**
@@ -34,6 +44,11 @@ public class Robot extends IterativeRobot {
 	public static final Targeting targeting = new Targeting();
 	public static final Relay relay = new Relay();
 	public static final Ultrasonic ultrasonic = new Ultrasonic();
+	public static final Object imgLock = new Object();
+	
+	public static double centerX1 = 0.0;
+	public static double centerX2 = 0.0;
+	private static CvSource cvsource;
 
 	public static OI oi;
 
@@ -51,7 +66,29 @@ public class Robot extends IterativeRobot {
 		oi.init();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		AxisCamera cam = CameraServer.getInstance().addAxisCamera("axis-camera.local");
+		CvSink cvsink = CameraServer.getInstance().getVideo();
+		cvsource = CameraServer.getInstance().putVideo("cam", 320, 240);
+		Mat source = new Mat();
+		Mat output = new Mat();
+		Scalar color = new Scalar(0, 0, 255);
+		cam.setResolution(320, 240);
 		
+		VisionThread visionThread = new VisionThread(cam, new GripPipeline(), pipeline-> {
+			cvsink.grabFrame(source);
+			if (pipeline.filterContoursOutput().size() > 1) {
+				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
+				for(int i = 0; i<pipeline.filterContoursOutput().size(); i++)
+				Imgproc.drawContours(source, pipeline.filterContoursOutput(), i, color);
+				synchronized(imgLock) {
+					centerX1 = r1.x + (r1.width / 2);
+					centerX2 = r2.x + (r2.width / 2);
+				}
+			}
+			cvsource.putFrame(source);
+		});
+		visionThread.start();
 	}
 
 	/**
@@ -67,6 +104,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("centerX", centerX1);
+
 	}
 
 	/**

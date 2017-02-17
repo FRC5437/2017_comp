@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5437.robot.subsystems;
 
+import org.usfirst.frc.team5437.robot.Robot;
 import org.usfirst.frc.team5437.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,7 +22,7 @@ public class Targeting extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
 	@SuppressWarnings("unused")
-	double[] GetTarget() {
+	/*double[] GetTarget() {
     	double[] results = new double[2];
     	double[] areas = RobotMap.grip.getNumberArray("myContoursReport/area", defaults),
     			centerX = RobotMap.grip.getNumberArray("myContoursReport/centerX", defaults),
@@ -50,9 +51,9 @@ public class Targeting extends Subsystem {
     	}
     	System.out.println(targetDistance + " " + results[0] + " " + results[1]);
     	return results;
-    }
+    }*/
 	public double calcDeltaSetpoint(double distance) {
-		double[] targets = GetTarget();
+		double[] targets = {Robot.centerX1, Robot.centerX2};
 		double centerTarget = 0.0;
 		if(targets[1] < targets[0]) {
 			centerTarget = targets[0] - targets[1];
