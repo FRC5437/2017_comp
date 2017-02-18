@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
@@ -34,9 +35,11 @@ public class RobotMap {
 	public static RobotDrive chassis = new RobotDrive(drive1, drive2, drive3, drive4);
 	
 	public static CANTalon shooter = new CANTalon(4);
-	public static CANTalon climber1 = new CANTalon(5);
-	public static CANTalon climber2 = new CANTalon(6);
+	public static CANTalon shooter2 = new CANTalon(5);
+	public static CANTalon panSweeper = new CANTalon(6);
 	public static Spark stirrer = new Spark(0);
+	public static Victor climber1 = new Victor(1);
+	public static Victor climber2 = new Victor(2);
 	public static DigitalInput lSwitch = new DigitalInput(1);
 	public static DigitalOutput lights = new DigitalOutput(0);
 	public static AnalogInput ultrasonic = new AnalogInput(0);
@@ -48,7 +51,10 @@ public class RobotMap {
 		chassis.setSafetyEnabled(false);
 		shooter.changeControlMode(CANTalon.TalonControlMode.Speed);
 		shooter.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		shooter.setPID(0.1, 0.0, 0.0, 0.026, 0, 0.0, 0);
 		shooter.disable();
+		shooter2.changeControlMode(CANTalon.TalonControlMode.Follower);
+		shooter2.set(4);
 		grip = NetworkTable.getTable("GRIP");
 
 	}
