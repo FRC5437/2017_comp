@@ -30,11 +30,8 @@ public class BBATest1 extends CommandGroup {
     	addSequential(new WaitCommand(0.4));
     	addSequential(new TurnToAngle(60));
     	System.out.println("Waiting");
-    	addSequential(new WaitCommand(1.0));
-    	System.out.println("Targeting");
-    	addSequential(new target());
-    	addSequential(new DriveForTime(1.0, 0.0, 0.2));
-    	addSequential(new DriveUntilCollision(0.5));
+    	addSequential(new WaitCommand(0.4));
+    	addSequential(new CameraDrive());
     	addSequential(new DriveForTime(0.3, 0.0, 0.2));
     }
 }

@@ -38,6 +38,7 @@ public class DriveUntilCollision extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.chassis.Drive(0.0, 0.0);
+    	hasCollided = false;
     }
 
     // Called when another command which requires one or more of the same
