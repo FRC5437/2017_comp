@@ -5,6 +5,9 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team5437.robot.commands.BBATest1;
+import org.usfirst.frc.team5437.robot.commands.CenterGear;
+import org.usfirst.frc.team5437.robot.commands.RightGear;
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
 import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
@@ -64,23 +67,28 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		oi = new OI();
 		oi.init();
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addObject("Left Side", new BBATest1());
+		chooser.addObject("Center", new CenterGear());
+		chooser.addObject("Right Side", new RightGear());
+		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
 		AxisCamera cam = CameraServer.getInstance().addAxisCamera("axis-camera.local");
 		CvSink cvsink = CameraServer.getInstance().getVideo();
 		cvsource = CameraServer.getInstance().putVideo("cam", 320, 240);
 		Mat source = new Mat();
-		Mat output = new Mat();
 		Scalar color = new Scalar(0, 0, 255);
-		cam.setResolution(320, 240);
 		
 		VisionThread visionThread = new VisionThread(cam, new GripPipeline(), pipeline-> {
-			cvsink.grabFrame(source);
+			if (cvsink.grabFrame(source) == 0) {
+				System.out.println(cvsink.getError());
+			} else for(int i = 0; i<pipeline.filterContoursOutput().size(); i++) {
+				Imgproc.drawContours(source, pipeline.filterContoursOutput(), i, color);
+			}
 			if (pipeline.filterContoursOutput().size() > 1) {
+				
 				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
 				Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
-				for(int i = 0; i<pipeline.filterContoursOutput().size(); i++)
-				Imgproc.drawContours(source, pipeline.filterContoursOutput(), i, color);
+				
 				synchronized(imgLock) {
 					centerX1 = r1.x + (r1.width / 2);
 					centerX2 = r2.x + (r2.width / 2);
