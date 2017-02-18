@@ -24,9 +24,9 @@ public class BBATest2 extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addParallel(new DriveForTime(-1.0, 0.0, 0.3));
-    	addParallel(new TurnToAngle(45.0));
-    	addParallel(new ShortTurnToAngle(45.0));
-    	addParallel(new DriveUntilCollision(-0.5));
+    	addSequential(new DriveForTime(-1.0, 0.0, 0.3));
+    	addSequential(new TurnToAngle(45.0));
+    	addSequential(new ShortTurnToAngle(45.0));
+    	addSequential(new DriveUntilCollision(-0.3));
     }
 }

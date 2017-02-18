@@ -2,6 +2,7 @@ package org.usfirst.frc.team5437.robot;
 
 import org.usfirst.frc.team5437.robot.commands.BBATest1;
 import org.usfirst.frc.team5437.robot.commands.BBATest2;
+import org.usfirst.frc.team5437.robot.commands.CameraDrive;
 import org.usfirst.frc.team5437.robot.commands.Climb;
 import org.usfirst.frc.team5437.robot.commands.DriveUntilCollision;
 import org.usfirst.frc.team5437.robot.commands.Drop;
@@ -50,6 +51,7 @@ public class OI {
 	Joystick joy1 = new Joystick(0);
 	Button b1_1 = new JoystickButton(joy1, 1);
 	Button b1_2 = new JoystickButton(joy1, 2);
+	Button b1_3 = new JoystickButton(joy1, 3);
 	Joystick joy2 = new Joystick(1);
 	Button b2_1 = new JoystickButton(joy2, 1);
 	Button b2_2 = new JoystickButton(joy2, 2);
@@ -58,6 +60,7 @@ public class OI {
 		b1_1.whileHeld(new Climb());
 		//b1_2.whileHeld(new Drop()); NO. BAD.
 		b1_2.whenPressed(new BBATest1());
+		b1_3.whenPressed(new CameraDrive());
 		b2_1.whileHeld(new Fire());
 		b2_2.whenPressed(new RelayToggle());
 		b2_3.whenPressed(new BBATest2());
