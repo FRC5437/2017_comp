@@ -15,7 +15,7 @@ public class NavX extends Subsystem {
 	private static final double COLLISION_DETECTION_FACTOR = 0.5;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	AHRS navx = new AHRS(SPI.Port.kMXP, (byte) 100);
+	AHRS navx = new AHRS(SPI.Port.kMXP);
 	double last_x = 0.0;
 	double last_y = 0.0;
 	
