@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class CameraDrive extends Command {
 	double pegPos = 0.0;
-	double tarPos = 100.0;
+	double tarPos = 120.0;
 	boolean hasCollided = false;
     public CameraDrive() {
         // Use requires() here to declare subsystem dependencies

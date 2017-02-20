@@ -53,9 +53,12 @@ public class RobotMap {
 		shooter.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
 		shooter.setPID(0.1, 0.0, 0.0, 0.026, 0, 0.0, 0);
 		shooter.disable();
+		shooter.setInverted(true);
+		shooter.reverseSensor(true);
 		shooter2.changeControlMode(CANTalon.TalonControlMode.Follower);
 		shooter2.set(4);
 		grip = NetworkTable.getTable("GRIP");
+		lights.set(true);
 
 	}
 }
