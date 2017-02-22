@@ -11,6 +11,7 @@ import org.usfirst.frc.team5437.robot.commands.RightGear;
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
 import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
+import org.usfirst.frc.team5437.robot.subsystems.PanSweeper;
 import org.usfirst.frc.team5437.robot.subsystems.Relay;
 import org.usfirst.frc.team5437.robot.subsystems.Shooter;
 import org.usfirst.frc.team5437.robot.subsystems.Stirrer;
@@ -47,10 +48,12 @@ public class Robot extends IterativeRobot {
 	public static final Targeting targeting = new Targeting();
 	public static final Relay relay = new Relay();
 	public static final Ultrasonic ultrasonic = new Ultrasonic();
+	public static final PanSweeper pansweeper = new PanSweeper();
 	public static final Object imgLock = new Object();
 	
 	public static double centerX1 = 0.0;
 	public static double centerX2 = 0.0;
+	public static int contours = 0;
 	private static CvSource cvsource;
 
 	public static OI oi;
@@ -84,6 +87,7 @@ public class Robot extends IterativeRobot {
 			} else for(int i = 0; i<pipeline.filterContoursOutput().size(); i++) {
 				Imgproc.drawContours(source, pipeline.filterContoursOutput(), i, color);
 			}
+			contours = pipeline.filterContoursOutput().size();
 			if (pipeline.filterContoursOutput().size() > 1) {
 				
 				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));

@@ -25,12 +25,13 @@ public class BBATest1 extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	addParallel(new ResetYaw());
     	System.out.println("Starting Test");
-    	addSequential(new DriveForTime(1.0, -0.2, 0.5));
+    	addSequential(new DriveForTime(1.0, 0.0, 0.7));
     	addSequential(new WaitCommand(0.4));
-    	addSequential(new TurnToAngle(60));
+    	addSequential(new TurnToAngle(55));
     	System.out.println("Waiting");
-    	addSequential(new WaitCommand(0.4));
+    	addSequential(new WaitCommand(0.6));
     	addSequential(new CameraDrive());
     	addSequential(new DriveForTime(0.3, 0.0, 0.2));
     }

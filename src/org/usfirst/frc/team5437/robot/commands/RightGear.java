@@ -28,7 +28,7 @@ public class RightGear extends CommandGroup {
     	System.out.println("Starting Test");
     	addSequential(new DriveForTime(1.0, -0.2, 0.5));
     	addSequential(new WaitCommand(0.4));
-    	addSequential(new TurnToAngle(-60));
+    	addSequential(new TurnToAngle(-55));
     	System.out.println("Waiting");
     	addSequential(new WaitCommand(0.4));
     	addSequential(new CameraDrive());

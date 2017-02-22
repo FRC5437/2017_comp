@@ -24,16 +24,20 @@ public class CameraDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putString("CameraDriveCenters", "x1: " + Robot.centerX1 + "  x2: " + Robot.centerX2);
-    	pegPos = (Robot.centerX1 + Robot.centerX2) / 2;
-    	pegPos -= tarPos;
-    	if (pegPos < -10 || pegPos > 10){
-    		System.out.println("Large Delta Detected  **** pegPos: " + pegPos);
-    		pegPos /= 2;
-    	}
-    	Robot.chassis.Drive(0.35, pegPos * -0.008);
-    	if(timeSinceInitialized() > 1.0) {
-    		hasCollided = Robot.navx.detectCollision();
+    	if (Robot.contours == 0) {
+    		Robot.chassis.Drive(0.0, 0.2);
+    	} else {
+    		SmartDashboard.putString("CameraDriveCenters", "x1: " + Robot.centerX1 + "  x2: " + Robot.centerX2);
+    		pegPos = (Robot.centerX1 + Robot.centerX2) / 2;
+    		pegPos -= tarPos;
+    		if (pegPos < -10 || pegPos > 10){
+    			System.out.println("Large Delta Detected  **** pegPos: " + pegPos);
+    			pegPos /= 2;
+    		}
+    		Robot.chassis.Drive(0.35, pegPos * -0.008);
+    		if(timeSinceInitialized() > 1.0) {
+    			hasCollided = Robot.navx.detectCollision();
+    		}
     	}
     }
 
