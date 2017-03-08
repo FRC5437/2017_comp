@@ -8,8 +8,10 @@ import org.usfirst.frc.team5437.robot.commands.DriveUntilCollision;
 import org.usfirst.frc.team5437.robot.commands.Drop;
 import org.usfirst.frc.team5437.robot.commands.Fire;
 import org.usfirst.frc.team5437.robot.commands.GetDistance;
+import org.usfirst.frc.team5437.robot.commands.LeftGearAndShoot;
 import org.usfirst.frc.team5437.robot.commands.RelayToggle;
 import org.usfirst.frc.team5437.robot.commands.ResetYaw;
+import org.usfirst.frc.team5437.robot.commands.RotateFromPeg;
 import org.usfirst.frc.team5437.robot.commands.TurnToAngle;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -57,15 +59,17 @@ public class OI {
 	Button b2_1 = new JoystickButton(joy2, 1);
 	Button b2_2 = new JoystickButton(joy2, 2);
 	Button b2_3 = new JoystickButton(joy2, 3);
+	Button b2_11 = new JoystickButton(joy2, 11);
 	Button b2_12 = new JoystickButton(joy2, 12);
 	public void init() {
-		b1_1.whileHeld(new Climb());
+		b1_2.whileHeld(new Climb());
 		//b1_2.whileHeld(new Drop()); NO. BAD.
-		b1_2.whenPressed(new BBATest1());
-		b1_3.whenPressed(new CameraDrive());
-		b2_1.whileHeld(new Fire());
+		//b1_2.whenPressed(new BBATest1());
+		//b1_3.whenPressed(new CameraDrive());
+		b1_1.whileHeld(new Fire());
 		b2_2.whenPressed(new RelayToggle());
-		b2_3.whenPressed(new BBATest2());
+		//b2_3.whenPressed(new LeftGearAndShoot());
+		//b2_11.whenPressed(new RotateFromPeg(45));
 		b2_12.whenPressed(new ResetYaw());
 	}
 	public Joystick getJoy1(){return joy1;}

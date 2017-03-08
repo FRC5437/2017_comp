@@ -46,9 +46,9 @@ public class Chassis extends PIDSubsystem {
         // e.g. yourMotor.set(output);
     	Drive(0.0, -output);
     }
-   /* public void PIDDrive(double left, double right) {
+    public void PIDDrive(double left, double right) {
     	RobotMap.chassis.tankDrive(left, right, false);
-    }*/
+    }
     public void Drive(double drive, double rotate){
     	RobotMap.chassis.arcadeDrive(drive, rotate, false);
     }

@@ -7,7 +7,9 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5437.robot.commands.BBATest1;
 import org.usfirst.frc.team5437.robot.commands.CenterGear;
+import org.usfirst.frc.team5437.robot.commands.LeftGearAndShoot;
 import org.usfirst.frc.team5437.robot.commands.RightGear;
+import org.usfirst.frc.team5437.robot.commands.RightGearAndShoot;
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
 import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
@@ -27,6 +29,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.VisionThread;
@@ -67,12 +70,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		NetworkTable.globalDeleteAll();
 		RobotMap.init();
 		oi = new OI();
 		oi.init();
 		chooser.addObject("Left Side", new BBATest1());
 		chooser.addObject("Center", new CenterGear());
 		chooser.addObject("Right Side", new RightGear());
+		chooser.addDefault("Left Gear And Shoot", new LeftGearAndShoot());
+		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
 		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
 		AxisCamera cam = CameraServer.getInstance().addAxisCamera("axis-camera.local");
