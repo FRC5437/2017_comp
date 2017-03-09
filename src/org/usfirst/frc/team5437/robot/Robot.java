@@ -81,7 +81,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
 		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
-		AxisCamera cam = CameraServer.getInstance().addAxisCamera("axis-camera.local");
+		AxisCamera cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
 		CvSink cvsink = CameraServer.getInstance().getVideo();
 		cvsource = CameraServer.getInstance().putVideo("cam", 320, 240);
 		Mat source = new Mat();
