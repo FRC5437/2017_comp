@@ -17,7 +17,7 @@ public class Stirrer extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     public void Stir() {
-    	RobotMap.stirrer.set(0.2);
+    	RobotMap.stirrer.set(1.0);
     }
     public void Stop() {
     	RobotMap.stirrer.set(0.0);

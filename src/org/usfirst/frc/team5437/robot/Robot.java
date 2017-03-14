@@ -1,18 +1,38 @@
 
 package org.usfirst.frc.team5437.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team5437.robot.commands.BBATest1;
+import org.usfirst.frc.team5437.robot.commands.CenterGear;
+import org.usfirst.frc.team5437.robot.commands.LeftGearAndShoot;
+import org.usfirst.frc.team5437.robot.commands.RightGear;
+import org.usfirst.frc.team5437.robot.commands.RightGearAndShoot;
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
 import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
+import org.usfirst.frc.team5437.robot.subsystems.PanSweeper;
+import org.usfirst.frc.team5437.robot.subsystems.Relay;
 import org.usfirst.frc.team5437.robot.subsystems.Shooter;
 import org.usfirst.frc.team5437.robot.subsystems.Stirrer;
+import org.usfirst.frc.team5437.robot.subsystems.Targeting;
+import org.usfirst.frc.team5437.robot.subsystems.Ultrasonic;
 
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
 
 /**
@@ -28,6 +48,16 @@ public class Robot extends IterativeRobot {
 	public static final NavX navx = new NavX();
 	public static final Climber climber = new Climber();
 	public static final Stirrer stirrer = new Stirrer();
+	public static final Targeting targeting = new Targeting();
+	public static final Relay relay = new Relay();
+	public static final Ultrasonic ultrasonic = new Ultrasonic();
+	public static final PanSweeper pansweeper = new PanSweeper();
+	public static final Object imgLock = new Object();
+	
+	public static double centerX1 = 0.0;
+	public static double centerX2 = 0.0;
+	public static int contours = 0;
+	private static CvSource cvsource;
 
 	public static OI oi;
 
@@ -40,11 +70,43 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		NetworkTable.globalDeleteAll();
 		RobotMap.init();
 		oi = new OI();
 		oi.init();
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addObject("Left Side", new BBATest1());
+		chooser.addObject("Center", new CenterGear());
+		chooser.addObject("Right Side", new RightGear());
+		chooser.addDefault("Left Gear And Shoot", new LeftGearAndShoot());
+		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
+		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
+		AxisCamera cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
+		CvSink cvsink = CameraServer.getInstance().getVideo();
+		cvsource = CameraServer.getInstance().putVideo("cam", 320, 240);
+		Mat source = new Mat();
+		Scalar color = new Scalar(0, 0, 255);
+		
+		VisionThread visionThread = new VisionThread(cam, new GripPipeline(), pipeline-> {
+			if (cvsink.grabFrame(source) == 0) {
+				System.out.println(cvsink.getError());
+			} else for(int i = 0; i<pipeline.filterContoursOutput().size(); i++) {
+				Imgproc.drawContours(source, pipeline.filterContoursOutput(), i, color);
+			}
+			contours = pipeline.filterContoursOutput().size();
+			if (pipeline.filterContoursOutput().size() > 1) {
+				
+				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
+				
+				synchronized(imgLock) {
+					centerX1 = r1.x + (r1.width / 2);
+					centerX2 = r2.x + (r2.width / 2);
+				}
+			}
+			cvsource.putFrame(source);
+		});
+		visionThread.start();
 	}
 
 	/**
@@ -60,6 +122,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("centerX", centerX1);
+
 	}
 
 	/**
@@ -113,6 +177,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putBoolean("hasGear", RobotMap.lSwitch.get());
 	}
 
 	/**
