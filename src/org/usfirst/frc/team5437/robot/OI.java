@@ -72,15 +72,15 @@ public class OI {
 		//b1_2.whenPressed(new BBATest1());
 		//b1_3.whenPressed(new CameraDrive());
 		b1_1.whileHeld(new Fire());
-		b2_1.whenPressed(new RightGear());
+		/*b2_1.whenPressed(new RightGear());
 		b2_2.whenPressed(new LeftGear());
 		b2_3.whenPressed(new RightGearMoreTurn());
 		b2_4.whenPressed(new RightGearLessSpeed());
 		b2_5.whenPressed(new RightGearMoreTurnLessSpeed());
 		b2_6.whenPressed(new LeftGearMoreTurn());
 		b2_7.whenPressed(new LeftGearLessSpeed());
-		b2_8.whenPressed(new LeftGearMoreTurnLessSpeed());
-		b2_9.whenPressed(new RelayToggle());
+		b2_8.whenPressed(new LeftGearMoreTurnLessSpeed());*/
+		b2_11.whenPressed(new RelayToggle());
 		//b2_3.whenPressed(new LeftGearAndShoot());
 		//b2_11.whenPressed(new RotateFromPeg(45));
 		b2_12.whenPressed(new ResetYaw());
