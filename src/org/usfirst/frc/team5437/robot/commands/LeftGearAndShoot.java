@@ -25,7 +25,7 @@ public class LeftGearAndShoot extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new BBATest1());
+    	addSequential(new LeftGear());
     	addSequential(new WaitCommand(1.0));
     	addSequential(new RotateFromPeg(true, 42));
     	addSequential(new DriveUntilCollision(-0.5));

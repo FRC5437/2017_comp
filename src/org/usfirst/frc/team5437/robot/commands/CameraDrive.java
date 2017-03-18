@@ -12,10 +12,12 @@ public class CameraDrive extends Command {
 	double pegPos = 0.0;
 	double tarPos = 120.0;
 	boolean hasCollided = false;
-    public CameraDrive() {
+	double spd = 0.0;
+    public CameraDrive(double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.chassis);
+    	spd = speed;
     }
 
     // Called just before this Command runs the first time
@@ -34,7 +36,7 @@ public class CameraDrive extends Command {
     			System.out.println("Large Delta Detected  **** pegPos: " + pegPos);
     			pegPos /= 2;
     		}
-    		Robot.chassis.Drive(0.35, pegPos * -0.008);
+    		Robot.chassis.Drive(spd, pegPos * -0.008);
     		if(timeSinceInitialized() > 1.0) {
     			hasCollided = Robot.navx.detectCollision();
     		}

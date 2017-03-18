@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 /**
  *
  */
-public class BBATest1 extends CommandGroup {
+public class LeftGear extends CommandGroup {
 
-    public BBATest1() {
+    public LeftGear() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -32,7 +32,7 @@ public class BBATest1 extends CommandGroup {
     	addSequential(new TurnToAngle(55));
     	System.out.println("Waiting");
     	addSequential(new WaitCommand(0.6));
-    	addSequential(new CameraDrive());
+    	addSequential(new CameraDrive(0.35));
     	addSequential(new DriveForTime(0.3, 0.0, 0.2));
     }
 }
