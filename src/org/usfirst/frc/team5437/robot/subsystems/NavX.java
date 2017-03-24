@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class NavX extends Subsystem {
 	
-	private static final double COLLISION_DETECTION_FACTOR = 0.6;
+	private static final double COLLISION_DETECTION_FACTOR = 0.45;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	AHRS navx = new AHRS(SPI.Port.kMXP);

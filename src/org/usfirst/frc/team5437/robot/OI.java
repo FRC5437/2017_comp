@@ -1,7 +1,9 @@
 package org.usfirst.frc.team5437.robot;
 
 import org.usfirst.frc.team5437.robot.commands.Climb;
+import org.usfirst.frc.team5437.robot.commands.DriveRobot;
 import org.usfirst.frc.team5437.robot.commands.Fire;
+import org.usfirst.frc.team5437.robot.commands.KillCommands;
 import org.usfirst.frc.team5437.robot.commands.LeftGear;
 import org.usfirst.frc.team5437.robot.commands.LeftGearLessSpeed;
 import org.usfirst.frc.team5437.robot.commands.LeftGearMoreTurn;
@@ -16,6 +18,7 @@ import org.usfirst.frc.team5437.robot.commands.RightGearMoreTurnLessSpeed;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 
 /**
@@ -64,6 +67,7 @@ public class OI {
 	Button b2_7 = new JoystickButton(joy2, 7);
 	Button b2_8 = new JoystickButton(joy2, 8);
 	Button b2_9 = new JoystickButton(joy2, 9);
+	Button b2_10 = new JoystickButton(joy2, 10);
 	Button b2_11 = new JoystickButton(joy2, 11);
 	Button b2_12 = new JoystickButton(joy2, 12);
 	public void init() {
@@ -82,7 +86,8 @@ public class OI {
 		b2_8.whenPressed(new LeftGearMoreTurnLessSpeed());
 		b2_9.whenPressed(new RelayToggle());
 		//b2_3.whenPressed(new LeftGearAndShoot());
-		//b2_11.whenPressed(new RotateFromPeg(45));
+		b2_10.whenPressed(new KillCommands());
+		b2_11.whenPressed(new DriveRobot());
 		b2_12.whenPressed(new ResetYaw());
 	}
 	public Joystick getJoy1(){return joy1;}
