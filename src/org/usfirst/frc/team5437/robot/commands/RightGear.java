@@ -26,13 +26,11 @@ public class RightGear extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new ResetYaw());
-    	System.out.println("Starting Test");
     	addSequential(new DriveForTime(1.0, -0.2, 0.5));
     	addSequential(new WaitCommand(0.4));
     	addSequential(new TurnToAngle(-55));
-    	System.out.println("Waiting");
     	addSequential(new WaitCommand(0.6));
-    	addSequential(new CameraDrive(0.35));
-    	addSequential(new DriveForTime(0.3, 0.0, 0.2));
+    	addSequential(new CameraDrive(0.35, 1.0));
+    	addSequential(new DriveForTime(0.35, 0.0, 1.5));
     }
 }

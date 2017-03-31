@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5437.robot;
 
 import org.usfirst.frc.team5437.robot.commands.Climb;
+import org.usfirst.frc.team5437.robot.commands.Drop;
 import org.usfirst.frc.team5437.robot.commands.Fire;
 import org.usfirst.frc.team5437.robot.commands.LeftGear;
 import org.usfirst.frc.team5437.robot.commands.LeftGearLessSpeed;
@@ -50,6 +51,7 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
+	
 	Joystick joy1 = new Joystick(0);
 	Button b1_1 = new JoystickButton(joy1, 1);
 	Button b1_2 = new JoystickButton(joy1, 2);
@@ -66,6 +68,8 @@ public class OI {
 	Button b2_9 = new JoystickButton(joy2, 9);
 	Button b2_11 = new JoystickButton(joy2, 11);
 	Button b2_12 = new JoystickButton(joy2, 12);
+	Joystick joy3 = new Joystick(2);
+	Button b3_1 = new JoystickButton(joy3, 1);
 	public void init() {
 		b1_2.whileHeld(new Climb());
 		//b1_2.whileHeld(new Drop()); NO. BAD.
@@ -84,6 +88,7 @@ public class OI {
 		//b2_3.whenPressed(new LeftGearAndShoot());
 		//b2_11.whenPressed(new RotateFromPeg(45));
 		b2_12.whenPressed(new ResetYaw());
+		b3_1.whileHeld(new Drop());
 	}
 	public Joystick getJoy1(){return joy1;}
 	public Joystick getJoy2(){return joy2;} 

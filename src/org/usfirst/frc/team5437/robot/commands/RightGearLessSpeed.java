@@ -32,7 +32,7 @@ public class RightGearLessSpeed extends CommandGroup {
     	addSequential(new TurnToAngle(-55));
     	System.out.println("Waiting");
     	addSequential(new WaitCommand(0.6));
-    	addSequential(new CameraDrive(0.25));
-    	addSequential(new DriveForTime(0.3, 0.0, 0.2));
+    	addSequential(new CameraDrive(0.25, 1.0));
+    	addSequential(new DriveForTime(0.3, 0.0, 1.5));
     }
 }

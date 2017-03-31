@@ -13,11 +13,16 @@ public class CameraDrive extends Command {
 	double tarPos = 120.0;
 	boolean hasCollided = false;
 	double spd = 0.0;
-    public CameraDrive(double speed) {
+	boolean isTimed = false;
+    public CameraDrive(double speed, double time) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.chassis);
     	spd = speed;
+    	if(time > 0) {
+    	isTimed = true;
+    	setTimeout(time);
+    	}
     }
 
     // Called just before this Command runs the first time
@@ -29,15 +34,13 @@ public class CameraDrive extends Command {
     	if (Robot.contours == 0) {
     		Robot.chassis.Drive(0.0, 0.2);
     	} else {
-    		SmartDashboard.putString("CameraDriveCenters", "x1: " + Robot.centerX1 + "  x2: " + Robot.centerX2);
     		pegPos = (Robot.centerX1 + Robot.centerX2) / 2;
     		pegPos -= tarPos;
     		if (pegPos < -10 || pegPos > 10){
-    			System.out.println("Large Delta Detected  **** pegPos: " + pegPos);
     			pegPos /= 2;
     		}
     		Robot.chassis.Drive(spd, pegPos * -0.008);
-    		if(timeSinceInitialized() > 1.0) {
+    		if(timeSinceInitialized() > 1.5) {
     			hasCollided = Robot.navx.detectCollision();
     		}
     	}
@@ -45,7 +48,11 @@ public class CameraDrive extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return hasCollided;
+    	if (isTimed) {
+    		return isTimedOut();
+    	} else {
+    		return hasCollided;
+    	}
     }
 
     // Called once after isFinished returns true
