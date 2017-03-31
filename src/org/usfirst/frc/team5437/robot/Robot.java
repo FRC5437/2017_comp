@@ -6,6 +6,8 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5437.robot.commands.CenterGear;
+import org.usfirst.frc.team5437.robot.commands.CenterGearNoTarget;
+import org.usfirst.frc.team5437.robot.commands.Fire;
 import org.usfirst.frc.team5437.robot.commands.LeftGear;
 import org.usfirst.frc.team5437.robot.commands.LeftGearAndShoot;
 import org.usfirst.frc.team5437.robot.commands.LeftGearLessSpeed;
@@ -81,16 +83,18 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		oi.init();
 		chooser.addObject("Left Side", new LeftGear());
-		chooser.addDefault("Center", new CenterGear());
+		chooser.addObject("Center", new CenterGear());
 		chooser.addObject("Right Side", new RightGear());
 		chooser.addObject("Left Gear And Shoot", new LeftGearAndShoot());
 		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
+		chooser.addDefault("Center No Cam", new CenterGearNoTarget());
 		chooser.addObject("Left Side More Turn", new LeftGearMoreTurn());
 		chooser.addObject("Left Side Less Speed", new LeftGearLessSpeed());
 		chooser.addObject("Left Side More Turn", new LeftGearMoreTurnLessSpeed());
 		chooser.addObject("Right Side More Turn", new RightGearMoreTurn());
 		chooser.addObject("Right Side Less Speed", new RightGearLessSpeed());
 		chooser.addObject("Right Side More Turn Less Speed", new RightGearMoreTurnLessSpeed());
+		chooser.addObject("Shoot", new Fire());
 		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
 		AxisCamera cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
