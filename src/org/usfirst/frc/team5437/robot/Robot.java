@@ -29,6 +29,7 @@ import org.usfirst.frc.team5437.robot.subsystems.Ultrasonic;
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -67,10 +68,11 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	LinkedSendableChooser<Command> chooser = new LinkedSendableChooser<>();
 	
 	VisionThread visionThread;
 	AxisCamera cam;
+	UsbCamera cam2;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -89,7 +91,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
 		chooser.addObject("Left Side More Turn", new LeftGearMoreTurn());
 		chooser.addObject("Left Side Less Speed", new LeftGearLessSpeed());
-		chooser.addObject("Left Side More Turn", new LeftGearMoreTurnLessSpeed());
+		chooser.addObject("Left Side More Turn Less Speed", new LeftGearMoreTurnLessSpeed());
 		chooser.addObject("Right Side More Turn", new RightGearMoreTurn());
 		chooser.addObject("Right Side Less Speed", new RightGearLessSpeed());
 		chooser.addObject("Right Side More Turn Less Speed", new RightGearMoreTurnLessSpeed());
@@ -97,6 +99,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto mode", chooser);
 		cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
 		CvSink cvsink = CameraServer.getInstance().getVideo();
+		cam2 = CameraServer.getInstance().startAutomaticCapture(0);
+		cam2.setBrightness(50);
+		cam2.setResolution(320, 240);
+		cam2.setFPS(25);
 		cvsource = CameraServer.getInstance().putVideo("cam", 320, 240);
 		Mat source = new Mat();
 		Scalar color = new Scalar(0, 0, 255);
@@ -186,7 +192,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 		visionThread.interrupt();
 		cam.setBrightness(60);
-		cam.setFPS(45);
+		cam.setFPS(30);
 	}
 
 	/**
