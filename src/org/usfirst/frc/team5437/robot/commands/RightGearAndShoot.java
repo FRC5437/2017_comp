@@ -26,7 +26,7 @@ public class RightGearAndShoot extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new RightGear());
-    	addSequential(new WaitCommand(1.0));
+    	addSequential(new WaitCommand(2.0));
     	addSequential(new RotateFromPeg(false, -42));
     	addSequential(new DriveUntilCollision(-0.5));
     	addSequential(new DriveForTime(-0.2, 0.0, 0.2));

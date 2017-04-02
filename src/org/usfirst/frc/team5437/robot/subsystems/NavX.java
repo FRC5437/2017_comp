@@ -6,6 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -34,6 +35,8 @@ public class NavX extends Subsystem {
     	double jerk_y = accel_y - last_y;
     	last_x = accel_x;
     	last_y = accel_y;
+    	SmartDashboard.putNumber("X jerk", jerk_x);
+    	SmartDashboard.putNumber("Y jerk", jerk_y);
     	if(jerk_x > COLLISION_DETECTION_FACTOR || jerk_y > COLLISION_DETECTION_FACTOR) {
     		last_x = 0.0;
     		last_y = 0.0;

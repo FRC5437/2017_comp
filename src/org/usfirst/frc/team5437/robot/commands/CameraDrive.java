@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class CameraDrive extends Command {
 	double pegPos = 0.0;
-	double tarPos = 120.0;
+	double tarPos = 120.0; //TODO: Change back to 120 for competition
 	boolean hasCollided = false;
 	double spd = 0.0;
 	boolean isTimed = false;

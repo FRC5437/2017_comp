@@ -6,6 +6,8 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5437.robot.commands.CenterGear;
+import org.usfirst.frc.team5437.robot.commands.DoNothing;
+import org.usfirst.frc.team5437.robot.commands.DriveUntilCollision;
 import org.usfirst.frc.team5437.robot.commands.LeftGear;
 import org.usfirst.frc.team5437.robot.commands.LeftGearAndShoot;
 import org.usfirst.frc.team5437.robot.commands.LeftGearLessSpeed;
@@ -84,25 +86,30 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		oi = new OI();
 		oi.init();
-		chooser.addObject("Left Side", new LeftGear());
 		chooser.addDefault("Center", new CenterGear());
-		chooser.addObject("Right Side", new RightGear());
-		chooser.addObject("Left Gear And Shoot", new LeftGearAndShoot());
-		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
+		chooser.addObject("- - - - - - - - - - - - - -", new DoNothing());
+		chooser.addObject("Left Side", new LeftGear());
 		chooser.addObject("Left Side More Turn", new LeftGearMoreTurn());
 		chooser.addObject("Left Side Less Speed", new LeftGearLessSpeed());
 		chooser.addObject("Left Side More Turn Less Speed", new LeftGearMoreTurnLessSpeed());
+		chooser.addObject("- - - - - - - - - - - - - - ", new DoNothing());
+		chooser.addObject("Right Side", new RightGear());
 		chooser.addObject("Right Side More Turn", new RightGearMoreTurn());
 		chooser.addObject("Right Side Less Speed", new RightGearLessSpeed());
 		chooser.addObject("Right Side More Turn Less Speed", new RightGearMoreTurnLessSpeed());
+		chooser.addObject("- - - - - - - - - - - - - -  ", new DoNothing());
+		chooser.addObject("Left Gear And Shoot", new LeftGearAndShoot());
+		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
+		chooser.addObject("- CAFFIENATED MONKEY AUTOS -", new DoNothing());
+		chooser.addObject("Drive Forward Until Collision", new DriveUntilCollision(1.0));
 		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
-		cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
-		CvSink cvsink = CameraServer.getInstance().getVideo();
 		cam2 = CameraServer.getInstance().startAutomaticCapture(0);
 		cam2.setBrightness(50);
 		cam2.setResolution(320, 240);
 		cam2.setFPS(25);
+		cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
+		CvSink cvsink = CameraServer.getInstance().getVideo("Axis Camera");
 		cvsource = CameraServer.getInstance().putVideo("cam", 320, 240);
 		Mat source = new Mat();
 		Scalar color = new Scalar(0, 0, 255);
@@ -126,6 +133,7 @@ public class Robot extends IterativeRobot {
 			}
 			cvsource.putFrame(source);
 		});
+		visionThread.start();
 	}
 
 	/**
@@ -135,8 +143,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-		cam.setBrightness(2);
-		cam.setFPS(15);
+		
 	}
 
 	@Override
@@ -169,7 +176,6 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		visionThread.start();
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -190,9 +196,6 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		visionThread.interrupt();
-		cam.setBrightness(60);
-		cam.setFPS(30);
 	}
 
 	/**
