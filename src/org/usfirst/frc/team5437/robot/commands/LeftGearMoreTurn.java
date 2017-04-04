@@ -32,7 +32,7 @@ public class LeftGearMoreTurn extends CommandGroup {
     	addSequential(new TurnToAngle(70));
     	System.out.println("Waiting");
     	addSequential(new WaitCommand(0.6));
-    	addSequential(new CameraDrive(0.35, 1.0));
-    	addSequential(new DriveForTime(0.3, 0.0, 1.5));
+    	addSequential(new CameraDrive(0.35, 0));
+    	addSequential(new DriveForTime(0.3, 0.0, 0.5));
     }
 }

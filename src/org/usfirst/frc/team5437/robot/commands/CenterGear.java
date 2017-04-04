@@ -27,10 +27,6 @@ public class CenterGear extends CommandGroup {
         // arm.
     	addSequential(new CameraDrive(0.35, 0.0));
     	addSequential(new DriveForTime(0.35, 0.0, 0.5));
-    	addSequential(new WaitCommand(3.0));
-    	addSequential(new DriveForTime(-0.35, 0.0, 1.0));
-    	addSequential(new CameraDrive(0.35, 0.0));
-    	addSequential(new DriveForTime(0.35, 0.0, 0.5));
     }
     	
 }
