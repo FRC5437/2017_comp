@@ -36,8 +36,14 @@ public class CameraDrive extends Command {
     	} else {
     		pegPos = (Robot.centerX1 + Robot.centerX2) / 2;
     		pegPos -= tarPos;
-    		if (pegPos < -10 || pegPos > 10){
-    			pegPos /= 2;
+    		
+    		// if the absolute value of the delta is too large, reduce it before making the adjustment
+    		if (Math.abs(pegPos) > 10){
+    			if (pegPos < -10){
+    				pegPos = -10;
+    			}else{
+    				pegPos = 10;
+    			}
     		}
     		Robot.chassis.Drive(spd, pegPos * -0.008);
     		if(timeSinceInitialized() > 1.5) {
