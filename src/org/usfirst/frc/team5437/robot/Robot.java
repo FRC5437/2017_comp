@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team5437.robot;
 
+import java.util.ArrayList;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -64,8 +66,8 @@ public class Robot extends IterativeRobot {
 	public static final PanSweeper pansweeper = new PanSweeper();
 	public static final Object imgLock = new Object();
 	
-	public static double centerX1 = 0.0;
-	public static double centerX2 = 0.0;
+	public static double centerX1 = -1.0;
+	public static double centerX2 = -1.0;
 	public static int contours = 0;
 	private static CvSource cvsource;
 
@@ -103,12 +105,12 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Left Gear And Shoot", new LeftGearAndShoot());
 		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
 		chooser.addObject("- CAFFIENATED MONKEY AUTOS -", new DoNothing());
-		chooser.addObject("Drive Forward Until Collision", new DriveUntilCollision(1.0));
+		chooser.addObject("Drive Forward Until Collision", new DriveUntilCollision(0.35));
 		chooser.addObject("Shoot and then Gear", new ShootThenGear(DriverStation.getInstance().getAlliance()));
 		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
 		cam2 = CameraServer.getInstance().startAutomaticCapture(0);
-		cam2.setBrightness(50);
+		cam2.setBrightness(2);
 		cam2.setResolution(320, 240);
 		cam2.setFPS(25);
 		cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
@@ -124,16 +126,44 @@ public class Robot extends IterativeRobot {
 				Imgproc.drawContours(source, pipeline.filterContoursOutput(), i, color);
 			}
 			contours = pipeline.filterContoursOutput().size();
-			if (pipeline.filterContoursOutput().size() > 1) {
+			
+			int valid_contours_count = 0;
+			ArrayList<Rect> rects = new ArrayList<>();
+			for(int i=0; i < pipeline.filterContoursOutput().size(); i++){
+				Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(i));
+				if ((r.height / 2) < 80){
+					rects.add(r);
+					valid_contours_count += 1;
+				}
 				
-				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-				Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
-				
-				synchronized(imgLock) {
-					centerX1 = r1.x + (r1.width / 2);
-					centerX2 = r2.x + (r2.width / 2);
+				if (valid_contours_count == 2){
+					//we have the 2 targets we want - we hope - so set them and abort the loop
+					break;
 				}
 			}
+			
+			if (valid_contours_count == 2){
+				synchronized(imgLock) {
+					centerX1 = rects.get(0).x + (rects.get(0).width / 2);
+					centerX2 = rects.get(1).x + (rects.get(1).width / 2);
+				}
+			}else{
+				synchronized(imgLock) {
+					centerX1 = -1.0;
+					centerX2 = -1.0;
+				}
+			}
+			
+			//if (pipeline.filterContoursOutput().size() > 1) {
+				
+				//Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				//Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
+				
+		//		synchronized(imgLock) {
+			//		centerX1 = r1.x + (r1.width / 2);
+				//	centerX2 = r2.x + (r2.width / 2);
+			//	}
+			//}
 			cvsource.putFrame(source);
 		});
 		visionThread.start();
