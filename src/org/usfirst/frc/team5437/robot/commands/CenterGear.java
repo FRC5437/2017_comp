@@ -1,13 +1,14 @@
 package org.usfirst.frc.team5437.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
  */
 public class CenterGear extends CommandGroup {
 
-    public CenterGear() {
+    public CenterGear(double camspeed) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -24,7 +25,8 @@ public class CenterGear extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new CameraDrive(0.35, 0));
-    	addSequential(new DriveForTime(0.2, 0.0, 0.2));
+    	addSequential(new CameraDrive(camspeed, 0.0));
+    	addSequential(new DriveForTime(camspeed, 0.0, 0.5));
     }
+    	
 }

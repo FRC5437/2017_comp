@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class CameraDrive extends Command {
 	double pegPos = 0.0;
-	double tarPos = 120.0;
+	double tarPos = 100.0; //TODO: Change back to 120 for competition
 	boolean hasCollided = false;
 	double spd = 0.0;
 	boolean isTimed = false;
@@ -31,19 +31,26 @@ public class CameraDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.contours == 0) {
-    		Robot.chassis.Drive(0.0, 0.2);
+    	if ((Robot.centerX1 < 0) || (Robot.centerX2 < 0)) {
+    		Robot.chassis.Drive(0.2, 0.2);
     	} else {
     		pegPos = (Robot.centerX1 + Robot.centerX2) / 2;
     		pegPos -= tarPos;
-    		if (pegPos < -10 || pegPos > 10){
-    			pegPos /= 2;
+    		
+    		// if the absolute value of the delta is too large, reduce it before making the adjustment
+    		if (Math.abs(pegPos) > 10){
+    			if (pegPos < -10){
+    				pegPos = -10;
+    			}else{
+    				pegPos = 10;
+    			}
     		}
     		Robot.chassis.Drive(spd, pegPos * -0.008);
     		if(timeSinceInitialized() > 1.5) {
     			hasCollided = Robot.navx.detectCollision();
     		}
     	}
+    	SmartDashboard.putNumber("Center", pegPos);
     }
 
     // Make this return true when this Command no longer needs to run execute()

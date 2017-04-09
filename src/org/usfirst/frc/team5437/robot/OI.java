@@ -4,15 +4,9 @@ import org.usfirst.frc.team5437.robot.commands.Climb;
 import org.usfirst.frc.team5437.robot.commands.Drop;
 import org.usfirst.frc.team5437.robot.commands.Fire;
 import org.usfirst.frc.team5437.robot.commands.LeftGear;
-import org.usfirst.frc.team5437.robot.commands.LeftGearLessSpeed;
-import org.usfirst.frc.team5437.robot.commands.LeftGearMoreTurn;
-import org.usfirst.frc.team5437.robot.commands.LeftGearMoreTurnLessSpeed;
 import org.usfirst.frc.team5437.robot.commands.RelayToggle;
 import org.usfirst.frc.team5437.robot.commands.ResetYaw;
 import org.usfirst.frc.team5437.robot.commands.RightGear;
-import org.usfirst.frc.team5437.robot.commands.RightGearLessSpeed;
-import org.usfirst.frc.team5437.robot.commands.RightGearMoreTurn;
-import org.usfirst.frc.team5437.robot.commands.RightGearMoreTurnLessSpeed;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;

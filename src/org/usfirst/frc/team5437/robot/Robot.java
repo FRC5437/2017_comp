@@ -1,21 +1,20 @@
 
 package org.usfirst.frc.team5437.robot;
 
+import java.util.ArrayList;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team5437.robot.commands.CenterGear;
+import org.usfirst.frc.team5437.robot.commands.DoNothing;
+import org.usfirst.frc.team5437.robot.commands.DriveUntilCollision;
 import org.usfirst.frc.team5437.robot.commands.LeftGear;
 import org.usfirst.frc.team5437.robot.commands.LeftGearAndShoot;
-import org.usfirst.frc.team5437.robot.commands.LeftGearLessSpeed;
-import org.usfirst.frc.team5437.robot.commands.LeftGearMoreTurn;
-import org.usfirst.frc.team5437.robot.commands.LeftGearMoreTurnLessSpeed;
 import org.usfirst.frc.team5437.robot.commands.RightGear;
 import org.usfirst.frc.team5437.robot.commands.RightGearAndShoot;
-import org.usfirst.frc.team5437.robot.commands.RightGearLessSpeed;
-import org.usfirst.frc.team5437.robot.commands.RightGearMoreTurn;
-import org.usfirst.frc.team5437.robot.commands.RightGearMoreTurnLessSpeed;
+import org.usfirst.frc.team5437.robot.commands.ShootThenGear;
 import org.usfirst.frc.team5437.robot.subsystems.Chassis;
 import org.usfirst.frc.team5437.robot.subsystems.Climber;
 import org.usfirst.frc.team5437.robot.subsystems.NavX;
@@ -29,13 +28,14 @@ import org.usfirst.frc.team5437.robot.subsystems.Ultrasonic;
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.VisionThread;
 
@@ -59,18 +59,19 @@ public class Robot extends IterativeRobot {
 	public static final PanSweeper pansweeper = new PanSweeper();
 	public static final Object imgLock = new Object();
 	
-	public static double centerX1 = 0.0;
-	public static double centerX2 = 0.0;
+	public static double centerX1 = -1.0;
+	public static double centerX2 = -1.0;
 	public static int contours = 0;
 	private static CvSource cvsource;
 
 	public static OI oi;
 
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	LinkedSendableChooser<Command> chooser = new LinkedSendableChooser<>();
 	
 	VisionThread visionThread;
 	AxisCamera cam;
+	UsbCamera cam2;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -82,21 +83,32 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		oi = new OI();
 		oi.init();
-		chooser.addObject("Left Side", new LeftGear());
-		chooser.addDefault("Center", new CenterGear());
-		chooser.addObject("Right Side", new RightGear());
-		chooser.addObject("Left Gear And Shoot", new LeftGearAndShoot());
-		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot());
-		chooser.addObject("Left Side More Turn", new LeftGearMoreTurn());
-		chooser.addObject("Left Side Less Speed", new LeftGearLessSpeed());
-		chooser.addObject("Left Side More Turn", new LeftGearMoreTurnLessSpeed());
-		chooser.addObject("Right Side More Turn", new RightGearMoreTurn());
-		chooser.addObject("Right Side Less Speed", new RightGearLessSpeed());
-		chooser.addObject("Right Side More Turn Less Speed", new RightGearMoreTurnLessSpeed());
+		chooser.addDefault("Center", new CenterGear(0.35));
+		chooser.addObject("- - - - - - - - - - - - - -", new DoNothing());
+		// typical auto constructor params are drive time, rotation, and camera drive speed
+		chooser.addObject("Left Side", new LeftGear(0.7, 50, 0.35));
+		chooser.addObject("Left Side More Turn", new LeftGear(0.7, 60, 0.35));
+		chooser.addObject("Left Side Less Speed", new LeftGear(0.7, 50, 0.2));
+		chooser.addObject("Left Side More Turn Less Speed", new LeftGear(0.7, 60, 0.2));
+		chooser.addObject("- - - - - - - - - - - - - - ", new DoNothing());
+		chooser.addObject("Right Side", new RightGear(0.7, -55, 0.35));
+		chooser.addObject("Right Side More Turn", new RightGear(0.7, -60, 0.35));
+		chooser.addObject("Right Side Less Speed", new RightGear(0.7, -55, 0.2));
+		chooser.addObject("Right Side More Turn Less Speed", new RightGear(0.7, -60, 0.2));
+		chooser.addObject("- - - - - - - - - - - - - -  ", new DoNothing());
+		chooser.addObject("Left Gear And Shoot", new LeftGearAndShoot(0.7, 50, 0.35, 2.0));
+		chooser.addObject("Right Gear And Shoot", new RightGearAndShoot(0.7, -50, 0.35, 2.0));
+		chooser.addObject("- CAFFIENATED MONKEY AUTOS -", new DoNothing());
+		chooser.addObject("Drive Forward Until Collision", new DriveUntilCollision(0.35));
+		chooser.addObject("Shoot and then Gear", new ShootThenGear(DriverStation.getInstance().getAlliance()));
 		//TODO: Add center and right side autos
 		SmartDashboard.putData("Auto mode", chooser);
+		cam2 = CameraServer.getInstance().startAutomaticCapture(0);
+		cam2.setBrightness(2);
+		cam2.setResolution(320, 240);
+		cam2.setFPS(25);
 		cam = CameraServer.getInstance().addAxisCamera("10.54.37.11");
-		CvSink cvsink = CameraServer.getInstance().getVideo();
+		CvSink cvsink = CameraServer.getInstance().getVideo("Axis Camera");
 		cvsource = CameraServer.getInstance().putVideo("cam", 320, 240);
 		Mat source = new Mat();
 		Scalar color = new Scalar(0, 0, 255);
@@ -108,18 +120,47 @@ public class Robot extends IterativeRobot {
 				Imgproc.drawContours(source, pipeline.filterContoursOutput(), i, color);
 			}
 			contours = pipeline.filterContoursOutput().size();
-			if (pipeline.filterContoursOutput().size() > 1) {
+			
+			int valid_contours_count = 0;
+			ArrayList<Rect> rects = new ArrayList<>();
+			for(int i=0; i < pipeline.filterContoursOutput().size(); i++){
+				Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(i));
+				if ((r.height / 2) < 80){
+					rects.add(r);
+					valid_contours_count += 1;
+				}
 				
-				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-				Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
-				
-				synchronized(imgLock) {
-					centerX1 = r1.x + (r1.width / 2);
-					centerX2 = r2.x + (r2.width / 2);
+				if (valid_contours_count == 2){
+					//we have the 2 targets we want - we hope - so set them and abort the loop
+					break;
 				}
 			}
+			
+			if (valid_contours_count == 2){
+				synchronized(imgLock) {
+					centerX1 = rects.get(0).x + (rects.get(0).width / 2);
+					centerX2 = rects.get(1).x + (rects.get(1).width / 2);
+				}
+			}else{
+				synchronized(imgLock) {
+					centerX1 = -1.0;
+					centerX2 = -1.0;
+				}
+			}
+			
+			//if (pipeline.filterContoursOutput().size() > 1) {
+				
+				//Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				//Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
+				
+		//		synchronized(imgLock) {
+			//		centerX1 = r1.x + (r1.width / 2);
+				//	centerX2 = r2.x + (r2.width / 2);
+			//	}
+			//}
 			cvsource.putFrame(source);
 		});
+		visionThread.start();
 	}
 
 	/**
@@ -129,8 +170,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-		cam.setBrightness(2);
-		cam.setFPS(15);
+		
 	}
 
 	@Override
@@ -163,7 +203,6 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		visionThread.start();
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -184,9 +223,6 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		visionThread.interrupt();
-		cam.setBrightness(60);
-		cam.setFPS(45);
 	}
 
 	/**
