@@ -26,7 +26,7 @@ public class LeftGear extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new ResetYaw());
-    	addSequential(new DriveForTime(1.0, 0.25, drivetime));
+    	addSequential(new DriveForTime(1.0, 0.0, drivetime));
     	addSequential(new WaitCommand(0.4));
     	addSequential(new TurnToAngle(rotation));
     	addSequential(new WaitCommand(0.6));
