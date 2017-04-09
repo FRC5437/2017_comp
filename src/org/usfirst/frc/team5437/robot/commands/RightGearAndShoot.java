@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
  */
 public class RightGearAndShoot extends CommandGroup {
 
-    public RightGearAndShoot() {
+    public RightGearAndShoot(double drivetime, int rotation, double camspeed, double waittime) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -25,8 +25,8 @@ public class RightGearAndShoot extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new RightGear());
-    	addSequential(new WaitCommand(2.0));
+    	addSequential(new RightGear(drivetime, rotation, camspeed));
+    	addSequential(new WaitCommand(waittime));
     	addSequential(new RotateFromPeg(false, -42));
     	addSequential(new DriveUntilCollision(-0.5));
     	addSequential(new DriveForTime(-0.2, 0.0, 0.2));
