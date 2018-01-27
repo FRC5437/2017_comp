@@ -32,7 +32,6 @@ public class ShortTurnToAngle extends PIDCommand {
     	return Robot.navx.getYaw();
     }
     protected void initialize() {
-    	SmartDashboard.putData(this.getPIDController().getSmartDashboardType(), this.getPIDController());
     	setSetpoint(setpoint);
     }
 

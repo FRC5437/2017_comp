@@ -32,7 +32,6 @@ public class target extends PIDCommand {
     	return Robot.navx.getYaw();
     }
     protected void initialize() {
-    	SmartDashboard.putData(this.getPIDController().getSmartDashboardType(), this.getPIDController());
     	setpoint = Robot.targeting.calcDeltaSetpoint(Robot.ultrasonic.getDistance());
     	setSetpointRelative(setpoint);
     	setpoint += getPosition();

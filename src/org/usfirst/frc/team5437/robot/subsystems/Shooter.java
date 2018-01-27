@@ -19,7 +19,6 @@ public class Shooter extends Subsystem {
     
     public void Fire() {
     	RobotMap.shooter.set(3900);
-    	RobotMap.shooter.enable();
     }
     public void Stop() {
     	RobotMap.shooter.set(0.0);

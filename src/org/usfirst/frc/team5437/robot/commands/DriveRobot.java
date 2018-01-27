@@ -22,7 +22,7 @@ public class DriveRobot extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassis.Drive(-Robot.oi.getJoy2().getRawAxis(1), -Robot.oi.getJoy2().getRawAxis(0));
+    	Robot.chassis.Drive(Robot.oi.getJoy2().getRawAxis(0), Robot.oi.getJoy2().getRawAxis(1));
     	SmartDashboard.putNumber("avgError", Robot.chassis.getPIDController().getAvgError());
     	SmartDashboard.putNumber("error", Robot.chassis.getPIDController().getError());
 

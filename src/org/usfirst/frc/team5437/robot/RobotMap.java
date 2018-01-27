@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5437.robot;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -26,17 +27,17 @@ public class RobotMap {
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
-	static CANTalon drive1 = new CANTalon(0);
-	static CANTalon drive2 = new CANTalon(1);
-	static CANTalon drive3 = new CANTalon(2);
-	static CANTalon drive4 = new CANTalon(3);
+	static WPI_TalonSRX drive1 = new WPI_TalonSRX(0);
+	static WPI_TalonSRX drive2 = new WPI_TalonSRX(1);
+	static WPI_TalonSRX drive3 = new WPI_TalonSRX(2);
+	static WPI_TalonSRX drive4 = new WPI_TalonSRX(3);
 	public static NetworkTable grip;
 	
 	public static RobotDrive chassis = new RobotDrive(drive1, drive2, drive3, drive4);
 	
-	public static CANTalon shooter = new CANTalon(4);
-	public static CANTalon shooter2 = new CANTalon(5);
-	public static CANTalon panSweeper = new CANTalon(6);
+	public static WPI_TalonSRX shooter = new WPI_TalonSRX(4);
+	public static WPI_TalonSRX shooter2 = new WPI_TalonSRX(5);
+	public static WPI_TalonSRX panSweeper = new WPI_TalonSRX(6);
 	public static Spark stirrer = new Spark(0);
 	public static Victor climber1 = new Victor(1);
 	public static Victor climber2 = new Victor(2);
@@ -44,19 +45,11 @@ public class RobotMap {
 	public static DigitalOutput lights = new DigitalOutput(0);
 	public static AnalogInput ultrasonic = new AnalogInput(0);
 	public static void init() {
-		drive1.reverseOutput(false);
-		drive1.reverseOutput(false);
-		drive3.reverseOutput(true);
-		drive4.reverseOutput(true);
+		drive1.setInverted(false);
+		drive1.setInverted(false);
+		drive3.setInverted(true);
+		drive4.setInverted(true);
 		chassis.setSafetyEnabled(false);
-		shooter.changeControlMode(CANTalon.TalonControlMode.Speed);
-		shooter.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-		shooter.setPID(0.1, 0.0, 0.0, 0.026, 0, 0.0, 0);
-		shooter.disable();
-		shooter.setInverted(true);
-		shooter.reverseSensor(true);
-		shooter2.changeControlMode(CANTalon.TalonControlMode.Follower);
-		shooter2.set(4);
 		grip = NetworkTable.getTable("GRIP");
 		lights.set(true);
 
